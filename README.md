@@ -1,7 +1,7 @@
 # Smart Vent IoT Controller: Fault-Tolerant Edge Architecture
 
 ## Project Overview
-This project is an edge-computing IoT controller designed to automate room ventilation based on ambient light levels. Built on the ESP32 platform, it features a highly resilient, non-blocking execution architecture that handles multi-threaded operations (Sensor reading, UI rendering, PWM control, and MQTT networking) without blocking the main event loop.
+This project is an edge-computing IoT controller Proof of Concept designed to automate room ventilation based on ambient light levels. Built on the ESP32 platform, it features a highly resilient, non-blocking execution architecture that handles multi-threaded operations (Sensor reading, UI rendering, PWM control, and MQTT networking) without blocking the main event loop.
 
 ## Architectural Highlights & Problem Solving
 During the development phase, several hardware and software bottlenecks were identified and resolved to ensure enterprise-grade stability:
@@ -27,8 +27,20 @@ The system utilizes a shared I2C bus for the display and sensor, while isolating
 | | VCC (Red) | **VIN (5V)** | **CRITICAL: Must connect to 5V to prevent Brownout** |
 | | GND (Brown/Black)| GND | |
 
-## MQTT API Contract
+## 🛠 Software Dependencies
+Before compiling the firmware in the Arduino IDE, ensure you have installed the following libraries via the **Library Manager** (Sketch -> Include Library -> Manage Libraries):
 
+*   **PubSubClient** *(by Nick O'Leary)* - For MQTT networking protocol.
+*   **ArduinoJson** *(by Benoit Blanchon)* - For efficient, non-blocking memory parsing.
+*   **BH1750** *(by Christopher Laws)* - For ambient light sensor communication.
+*   **ESP32Servo** *(by Kevin Harrington)* - For PWM hardware timer control on the ESP32.
+*   **Adafruit SSD1306** & **Adafruit GFX Library** - For OLED display UI rendering.
+
+---
+
+## 📡 MQTT API Contract & Data Flow
+
+The system acts as an edge device, splitting communication into telemetry updates and incoming control commands.
 ### 1. Telemetry Publish (ESP32 -> Broker)
 * **Topic:** `kaingaora/room1/sensor/light`
 * **Frequency:** Every 2000ms
