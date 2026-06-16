@@ -57,3 +57,15 @@ The system acts as an edge device, splitting communication into telemetry update
   "lux": 105.5,
   "isAuto": true
 }
+```
+### 2. Command Subscribe (Broker -> ESP32)
+* **Topic:** `kaingaora/room1/actuator/vent/override`
+* **Payload Format:** JSON
+* **Behavior:** Activating the manual override instantly disables the autonomous logic (`isAuto = false`). The system locks into the commanded servo angle for a predefined safety timeout (e.g., 5-10 seconds) before gracefully reverting back to the autonomous state to maintain room baseline conditions.
+
+```json
+{
+  "override": true,
+  "angle": 90
+}
+```
